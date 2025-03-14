@@ -84,3 +84,13 @@ For our permutation test involving the 'result' column, we got a p-value of 1.0,
 ></iframe>
 
 In fact, when we look at this plot we can see what is causing this NMAR issue! Only LPL matches have a recorded URL, all other matches have no URL!
+
+# 4: Hypothesis Testing
+
+Next, we wanted to perform a hypothesis test and see if the character 'Yone' had a positive effect on winrates or if he actually is a balanced character despite many feeling otherwise.
+
+To determine this we set up a hypothesis test with the null hypothesis that Yone's win rate was the same as the average character at 50%. Our alternative hypothesis was that his win rate was greater than 50%. We ran 10,000 simulations of a character with a 50% win rate playing 251 games as Yone, which is how many games we have worth of data in our dataset. Yone's observed win rate is 56.57%, and in these 10,000 simulations, our perfectly balanced character was only able to achieve a win rate equal or better to Yone's 2.14% of the time. 
+
+We chose a significance level of 0.05, meaning we find this p-value of 0.0214 to be significant, and as a result we reject the null hypothesis that Yone is a balanced character and instead consider that he has a positive influence on his team's winrate. We chose to run the hypothesis test on Yone's winrate, because that tells the biggest story in the game. Kills or Deaths could be determined by another factor such as playstyle or gamelength, whereas winning is the ultimate goal in LoL and as a result became our test statistic.
+
+# 5:
