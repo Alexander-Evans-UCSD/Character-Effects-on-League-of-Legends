@@ -7,15 +7,25 @@ of one character in particular, Yone, on game balance and match length. Our base
 statistics within League of Legends (LoL). 
 
 The columns we will be focusing on in particular today are the 'champion', 'gamelength', 'dpm', 'team kpm', 'patch', 'url', 'result', 'league', 'gameid' and 'pick{n}' columns 1-5.  
+
 The 'champion' column describes which champion a player picked in the match. A champion is the character that is being used by that player.  
+
 The 'gamelength' column stores the length of the game in seconds. We will attempt to predict this later in this report.  
+
 The 'dpm' column is the damage per minute done by either a player or a team during the match. More later on how to determine if it's a singular player or a team.  
+
 The 'team kpm' column shows the kills per minute of each team.  
-The 'patch' column describes which patch the match was played on.  
+
+The 'patch' column describes which patch the match was played on. 
+
 The 'url' column contains a url to the match, however data from this column is frequently missing.  
+
 The 'result' column contains a 1 if the match is a win, 0 if it is a loss.  
+
 The 'league' column contains the league that the match was played in. There are many different leagues in LoL that depend on region or skill level. 
+
 The 'gameid' contains the id of the match.  
+
 The 'pick{n}' columns are a set of five columns named 'pick1' to 'pick5' that contain the champions picked. These are important because the 'champion' column is empty if the data is stored as a team.
 
 # 2. Data Cleaning and Exploratory Data Analysis
@@ -95,8 +105,47 @@ We chose a significance level of 0.05, meaning we find this p-value of 0.0214 to
 
 # 5: Framing a prediction problem
 
-Next we decided to predict a value in our dataset based on the other values. For this section, we decided to predict 'gamelength' of a match based on the presence of our favorite character Yone, as well as the kills per minute (kpm) occuring in the match. This is a classic regression problem, with each of these variables becoming a feature in our prediction.
+Next we decided to predict a value in our dataset based on the other values. For this section, we decided to predict 'gamelength' of a match based on the presence of our favorite character Yone, as well as the kills per minute (KPM) occuring in the match. This is a classic regression problem, with each of these variables becoming a feature in our prediction.
 
-We decided these features because we figured they both would have a strong influence on a match. If Yone is a broken character like we claim, it stands to reason that he would make matches shorter, as he dominates other characters. We thought our other feature, kpm, could help predict match length because games with a higher kpm are a lot more aggressive and quick, whereas matches with lower kpm's are slower and more strategic, thus taking more time to complete. 
+We decided these features because we figured they both would have a strong influence on a match. If Yone is a broken character like we claim, it stands to reason that he would make matches shorter, as he dominates other characters. We thought our other feature, KPM, could help predict match length because games with a higher KPM are a lot more aggressive and quick, whereas matches with lower KPM's are slower and more strategic, thus taking more time to complete. 
 
 To determine the accuracy of our prediction, we are using Mean Square Error (MSE) which is the difference between our prediction and actual value for each prediction we make. We are using this over Root Mean Square Error (RMSE) because it punishes more for large prediction errors, which we want to avoid as much as possible. 
+
+# 6: Baseline Model
+
+Our baseline model to predict game length is a simple linear regression of the form:
+
+### Gamelength = 1935.48 - 2.93(If Yone is present on either team) - 65.16 * the average kills per minute per team
+
+This model means that both the presence of Yone and a high KPM match indicates that a match will likely be shorter.
+
+KPM is a quantitative feature, meaning that it's numerical, continuous and has a natural order to it. As a result, this feature did not need to be manipulated in any manner, and we could just chuck it into the pipeline.
+
+Is_Yone was a boolean value to mark the other feature, being True if Yone was present in the match, and False otherwise. This is an example of a nominal feature, because it is categorical, and there is no inherent ordering to this feature. Normally, we would have to one hot encode a nominal feature to get it working in a pipeline, however we were able to use the boolean value without modification because it was a single boolean, which is essentially a singular one hot encoded column. 
+
+The MSE of this model is 109780.5 which is quite a large number. We think this isn't great, and can definitely be improved, which we aim to do so with an upgraded model.
+
+# 7: Upgraded Model
+
+While our baseline model gave us an ok prediction of game length, we can do much better by including more features and changing the model we use!
+
+The first feature we added is the damage per minute for each team (DPM). It might be easy to confuse this measure with KPM, however they are very different. A high DPM suggests longer, more drawn out fights due to a key mechanic in LoL: healing. If a character wins a duel quickly, there won't be much damage done, and there will be no damage done in the time it takes the character to respawn. On the other hand, if a fight is drawn out over a longer period of time, there will most likely be healing done during that duel, and the DPM will be much higher than a clean quick kill.
+
+Another feature we added was a quantile transform of KPM. This makes it so KPM is normalized and has a more uniform distribution, meaning that outliers won't skew the data as much. If you look at the histogram of KPM from part 2, you can see this data has a right skew to it, and adding a quantile transformation makes that skew affect our data less.
+
+This time, instead of a linear regression model, we decided to use a Random Classifier Forest. This method creates a lot of different decision trees that are based off of bootstrapped samples of our data, which are then aggregated out to get the 'best' prediction. We tested multiple different hyperparameters such as number of trees in the forest, the max depth of each tree, how many samples required to split a node, and how many samples required in each leaf node.
+
+Of these hyperparameters, we found that the optimal max depth was 10, the optimal amount of trees per forest was 200, the optimal minimum amount of samples required to split a node was 5, and the optimal minimum amount of samples per leaf node was 1. 
+
+This model gave us a MSE of 71538.27, which is almost 40,000 less than our first model. This is a reduction of almost 35% compared to the first model.
+
+## Visualization of the importance of each feature for our final model
+
+<iframe
+  src="assets/final_model_visualization.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+This graph shows why our final model is so much better than our first! DPM is the most important feature for predicting gamelength that we have tested so far, and our first model was completely missing it!
