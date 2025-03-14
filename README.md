@@ -44,7 +44,7 @@ To fix this, we split up our dataset into two different datasets: 'players_data'
 | Jinx       |         1592 |     0.1131 | 259.975 |   15.01 |   nan |        0 | LFL2     | LOLTMNT03_179647 |     nan |     nan |     nan |     nan |     nan |
 | Leona      |         1592 |     0.1131 | 157.312 |   15.01 |   nan |        0 | LFL2     | LOLTMNT03_179647 |     nan |     nan |     nan |     nan |     nan |
 
-## Here is a plot visualizing LoL game length
+## Here is a histogram visualizing LoL game length
 
 <iframe
   src="assets/gamelengths_plot.html"
@@ -52,3 +52,14 @@ To fix this, we split up our dataset into two different datasets: 'players_data'
   height="600"
   frameborder="0"
 ></iframe>
+
+## Here is a boxplot showing the relationship between Damage Per Minute and game length
+
+<iframe
+  src="assets/dpm_quartiles.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+Note that DPM has been sorted into 4 quartiles as to make plotting a box plot possible. Q1 is the lowest quartile, while Q4 is the highest.  
