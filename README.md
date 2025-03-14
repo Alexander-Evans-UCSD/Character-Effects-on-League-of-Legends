@@ -44,3 +44,11 @@ To fix this, we split up our dataset into two different datasets: 'players_data'
 | Jinx       |         1592 |     0.1131 | 259.975 |   15.01 |   nan |        0 | LFL2     | LOLTMNT03_179647 |     nan |     nan |     nan |     nan |     nan |
 | Leona      |         1592 |     0.1131 | 157.312 |   15.01 |   nan |        0 | LFL2     | LOLTMNT03_179647 |     nan |     nan |     nan |     nan |     nan |
 
+## Here is a plot visualizing LoL game length
+
+<iframe
+  src="assets/gamelengths_plot.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
