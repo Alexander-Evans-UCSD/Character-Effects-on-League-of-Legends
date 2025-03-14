@@ -63,3 +63,24 @@ To fix this, we split up our dataset into two different datasets: 'players_data'
 ></iframe>
 
 Note that DPM has been sorted into 4 quartiles as to make plotting a box plot possible. Q1 is the lowest quartile, while Q4 is the highest.  
+
+# 3: Assessment of Missingness
+
+We believe that the 'url' column has data missing depending on the data from another column. This missing data is Not Missing At Random (NMAR) and we believe that a column that it depends on is the 'league' column.  
+
+To test this, we did a permutation test on both the 'url' column vs the 'league' column as well as the 'url' column vs the 'result' column as a control. Our null hypothesis was that the data in the 'url' column is missing completely by random, and our alternative hypothesis for both tests was that the data was missing due to the info in the column it was being tested against ('league' or 'result'). 
+
+For our permutation test involving the 'league' column, we got a p-value of 0.0, meaning that we reject the null hypothesis.
+
+For our permutation test involving the 'result' column, we got a p-value of 1.0, meaning that we fail to reject the null hypothesis.
+
+## Here is a bar graph showing the amount of valid and invalid urls per league
+
+<iframe
+  src="assets/url_missingness.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+In fact, when we look at this plot we can see what is causing this NMAR issue! Only LPL matches have a recorded URL, all other matches have no URL!
