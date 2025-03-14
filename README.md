@@ -44,10 +44,10 @@ To fix this, we split up our dataset into two different datasets: 'players_data'
 | Jinx       |         1592 |     0.1131 | 259.975 |   15.01 |   nan |        0 | LFL2     | LOLTMNT03_179647 |     nan |     nan |     nan |     nan |     nan |
 | Leona      |         1592 |     0.1131 | 157.312 |   15.01 |   nan |        0 | LFL2     | LOLTMNT03_179647 |     nan |     nan |     nan |     nan |     nan |
 
-## Here is a histogram visualizing LoL game length
+## Here is a histogram visualizing kills per minute in LoL
 
 <iframe
-  src="assets/gamelengths_plot.html"
+  src="assets/kpm_histogram.html"
   width="800"
   height="600"
   frameborder="0"
@@ -93,4 +93,10 @@ To determine this we set up a hypothesis test with the null hypothesis that Yone
 
 We chose a significance level of 0.05, meaning we find this p-value of 0.0214 to be significant, and as a result we reject the null hypothesis that Yone is a balanced character and instead consider that he has a positive influence on his team's winrate. We chose to run the hypothesis test on Yone's winrate, because that tells the biggest story in the game. Kills or Deaths could be determined by another factor such as playstyle or gamelength, whereas winning is the ultimate goal in LoL and as a result became our test statistic.
 
-# 5:
+# 5: Framing a prediction problem
+
+Next we decided to predict a value in our dataset based on the other values. For this section, we decided to predict 'gamelength' of a match based on the presence of our favorite character Yone, as well as the kills per minute (kpm) occuring in the match. This is a classic regression problem, with each of these variables becoming a feature in our prediction.
+
+We decided these features because we figured they both would have a strong influence on a match. If Yone is a broken character like we claim, it stands to reason that he would make matches shorter, as he dominates other characters. We thought our other feature, kpm, could help predict match length because games with a higher kpm are a lot more aggressive and quick, whereas matches with lower kpm's are slower and more strategic, thus taking more time to complete. 
+
+To determine the accuracy of our prediction, we are using Mean Square Error (MSE) which is the difference between our prediction and actual value for each prediction we make. We are using this over Root Mean Square Error (RMSE) because it punishes more for large prediction errors, which we want to avoid as much as possible. 
