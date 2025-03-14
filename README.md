@@ -148,4 +148,21 @@ This model gave us a MSE of 71538.27, which is almost 40,000 less than our first
   frameborder="0"
 ></iframe>
 
-This graph shows why our final model is so much better than our first! DPM is the most important feature for predicting gamelength that we have tested so far, and our first model was completely missing it!
+This graph shows why our final model is so much better than our first! DPM is the most important feature for predicting gamelength that we have tested so far, and our first model was completely missing it! We can also see that transforming KPM into quantiles improves its accuracy, showing our prediction earlier was correct.
+
+# 8: Fairness Analysis
+
+It's all well and good saying that we're done now, the report is over and everyone can go on with their days. However, there is one thing we are missing:
+
+Fairness.
+
+Our data is incredibly generalized at the moment, and with an online game such as League of Legends, the game will change regularly as new characters are added, and new balance changes are introduced to make sure that overperforming characters get reigned in, and weaker characters can get the boost they need. It's important to check and see if our data could be skewed by the patch we're on.
+
+For the final part of the report, we're going to be checking if our model is fair for the patches 15.02 and 15.03 as they are the patches the majority of competitive LoL matches have been played on this year. We will be performing a permutation test on the two different populations with our null hypothesis being that these two populations are drawn from the same distribution, whereas our alternative hypothesis is that these two populations are drawn from two different distributions.
+
+We will use the absolute difference in means between predictions modeled on the two datasets. Our observed absolute difference is 8.91.
+
+Running a simulation on shuffled copies of the data, we find that an observed difference of 8.91 or greater appears 55.63% of the time for fully random populations. This means our p-value is 0.5563, and with a significance value of 0.05, we fail to reject the null hypothesis. There is not enough evidence to support the claim that these two populations come from different distributions.
+
+Thank you so much if you managed to read all the way through this report, we hope you have a lovely rest of your day!
+-Alexander Evans and Seiichi Nakahira
