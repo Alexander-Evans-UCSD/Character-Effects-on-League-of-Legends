@@ -164,5 +164,5 @@ We will use the absolute difference in means between predictions modeled on the 
 
 Running a simulation on shuffled copies of the data, we find that an observed difference of 8.91 or greater appears 55.63% of the time for fully random populations. This means our p-value is 0.5563, and with a significance value of 0.05, we fail to reject the null hypothesis. There is not enough evidence to support the claim that these two populations come from different distributions.
 
-Thank you so much if you managed to read all the way through this report, we hope you have a lovely rest of your day!
+Thank you so much if you managed to read all the way through this report, we hope you have a lovely rest of your day!  
 -Alexander Evans and Seiichi Nakahira
